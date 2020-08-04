@@ -4,6 +4,7 @@ import axios, { AxiosRequestConfig } from "axios";
 const http = axios.create({
   baseURL: process.env.VUE_APP_API_URL,
 });
+export default http;
 
 class SessionStorageCache extends SWRVCache {
   STORAGE_KEY = "swrv";
@@ -24,7 +25,7 @@ class SessionStorageCache extends SWRVCache {
 
   set(k: any, v: any) {
     let payload: any = {};
-    const storage = localStorage.getItem(this.STORAGE_KEY);
+    const storage = sessionStorage.getItem(this.STORAGE_KEY);
     if (storage) {
       payload = this.decode(storage);
       payload[k] = { data: v, ttl: Date.now() };
@@ -32,20 +33,10 @@ class SessionStorageCache extends SWRVCache {
       payload = { [k]: { data: v, ttl: Date.now() } };
     }
 
-    localStorage.setItem(this.STORAGE_KEY, this.encode(payload));
+    sessionStorage.setItem(this.STORAGE_KEY, this.encode(payload));
   }
 }
 
 const cache = new SessionStorageCache();
 
-const get = async (url: string, config?: AxiosRequestConfig) => {
-  const { data, error } = useSWRV(
-    [url, config?.params],
-    () =>
-      http
-        .get(`${process.env.VUE_APP_API_URL}/${url}`, config)
-        .then((res) => res.data)
-        .catch((err) => err),
-    { cache: cache }
-  );
-};
+export { AxiosRequestConfig, cache };
