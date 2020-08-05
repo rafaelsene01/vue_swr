@@ -1,17 +1,21 @@
 <template>
   <div>
     <div v-if="!data">Loading...</div>
-    <div v-else>
-      <tr>
-        <th>Id</th>
-        <th>Nome</th>
-        <th>Produtos</th>
-      </tr>
-      <tr v-for="item in data" :key="item.id">
-        <td>{{ item.id }}</td>
-        <td>{{ item.nome }}</td>
-        <td>{{ item.produtos }}</td>
-      </tr>
+    <div v-else class="center">
+      <div>
+        <tr>
+          <th>Nome</th>
+          <th>Produtos</th>
+        </tr>
+        <tr v-for="item in data" :key="item.id">
+          <td>
+            <router-link :to="`usuarios/${item.id}`">{{
+              item.nome
+            }}</router-link>
+          </td>
+          <td>{{ item.produtos }}</td>
+        </tr>
+      </div>
     </div>
   </div>
 </template>
@@ -33,4 +37,10 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+</style>
