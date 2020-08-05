@@ -61,7 +61,7 @@ export default {
     function salvar(item: any) {
       const newItem = {
         ...item,
-        nome: ((this as any).$refs as any).nome.value,
+        nome: vue.refs.nome.value,
       };
 
       try {
@@ -77,10 +77,9 @@ export default {
             }
             return i;
           }),
-          cache,
-          false
+          cache
         );
-        mutate([`usuarios/${id}`, config?.params], newItem, cache, false);
+        mutate([`usuarios/${id}`, config?.params], newItem, cache);
       } catch (err) {
         //
       }
